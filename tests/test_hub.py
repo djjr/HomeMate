@@ -48,3 +48,11 @@ async def test_unknown_device_and_unsupported_capability():
         await hub.set_power("demo:nope", True)
     with pytest.raises(UnsupportedCapability):
         await hub.set_brightness("demo:fan", 50)
+
+
+async def test_your_names_override_device_names():
+    hub = Hub([DemoAdapter()], names={"demo:fan": "Bedroom Fan"})
+    await hub.discover()
+    assert {d.name for d in hub.devices()} == {"Bedroom Fan", "Demo Living Room Lamp"}
+    # ...and still apply after a command returns fresh state from the adapter.
+    assert (await hub.set_power("demo:fan", True)).name == "Bedroom Fan"

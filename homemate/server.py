@@ -14,7 +14,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from homemate.config import build_adapters
+from homemate.config import build_adapters, load_names
 from homemate.hub import Hub
 from homemate.models import DeviceNotFound, UnsupportedCapability
 
@@ -38,7 +38,7 @@ class BrightnessRequest(BaseModel):
 def create_app(hub: Hub | None = None) -> FastAPI:
     # Taking the hub as a parameter lets tests pass one built on the demo
     # adapter instead of real hardware ("dependency injection").
-    hub = hub or Hub(build_adapters())
+    hub = hub or Hub(build_adapters(), load_names())
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):

@@ -6,6 +6,7 @@ commit everything safely; .env is listed in .gitignore.
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
@@ -24,11 +25,12 @@ def _load_dotenv(path: Path) -> None:
         os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
 
 
-_load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+ROOT = Path(__file__).resolve().parent.parent
+_load_dotenv(ROOT / ".env")
 
 
 def build_adapters() -> list[Adapter]:
-    names = os.environ.get("HOMEMATE_ADAPTERS", "kasa,wemo").split(",")
+    names = os.environ.get("HOMEMATE_ADAPTERS", "kasa,wemo,wiz").split(",")
     adapters: list[Adapter] = []
     for name in (n.strip().lower() for n in names if n.strip()):
         # Imports live inside the branches so a missing library for a brand
@@ -50,6 +52,16 @@ def build_adapters() -> list[Adapter]:
             from homemate.adapters.wemo_adapter import WemoAdapter
 
             adapters.append(WemoAdapter())
+        elif name == "wiz":
+            from homemate.adapters.wiz_adapter import WizAdapter
+
+            adapters.append(WizAdapter())
         else:
             raise ValueError(f"Unknown adapter in HOMEMATE_ADAPTERS: {name!r}")
     return adapters
+
+
+def load_names() -> dict[str, str]:
+    """Your own names for devices, keyed by HomeMate id: {"wiz:a8bb...": "Porch"}."""
+    path = Path(os.environ.get("HOMEMATE_NAMES_FILE", ROOT / "names.json"))
+    return json.loads(path.read_text()) if path.exists() else {}

@@ -16,8 +16,9 @@ log = logging.getLogger(__name__)
 
 
 class Hub:
-    def __init__(self, adapters: list[Adapter]) -> None:
+    def __init__(self, adapters: list[Adapter], names: dict[str, str] | None = None) -> None:
         self._adapters = {a.brand: a for a in adapters}
+        self._names = names or {}
         self._devices: dict[str, Device] = {}
         # Discovery can be slow; don't let two run at once.
         self._discover_lock = asyncio.Lock()
@@ -41,7 +42,9 @@ class Hub:
                     continue
                 for device in result:
                     devices[device.id] = device
-            self._devices = devices
+            self._devices = {}
+            for device in devices.values():
+                self._store(device)
             return self.devices()
 
     def devices(self) -> list[Device]:
@@ -64,6 +67,9 @@ class Hub:
         return self._store(await adapter.set_brightness(device_id, level))
 
     def _store(self, device: Device) -> Device:
+        # Your names win over whatever the device calls itself. Applied here,
+        # in one place, so every adapter and every code path gets it.
+        device.name = self._names.get(device.id, device.name)
         self._devices[device.id] = device
         return device
 

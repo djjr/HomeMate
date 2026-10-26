@@ -8,7 +8,7 @@ app from the home screen.
 |---|---|---|
 | Kasa plugs / strips / bulbs | ✅ | Local network, `python-kasa` |
 | Wemo plugs / dimmers | ✅ | Local network, `pywemo` (works even though Belkin's cloud is gone) |
-| Philips bulbs | ⏳ next | Hue bridge API, or WiZ local protocol |
+| Philips Wi-Fi (WiZ) bulbs | ✅ | Local network, `pywizlight` |
 | Ring cameras | ⏳ later | Unofficial cloud API |
 | Resideo / First Alert alarms | ⏳ later | Read-only, via Google Home |
 | Amazon Smart Plug | ❌ | No API; replace with a Kasa plug |
@@ -48,6 +48,14 @@ The first time, macOS may ask whether Terminal (or Python) can **find devices
 on your local network**. Say **Allow**, or discovery finds nothing. You can
 check later in System Settings → Privacy & Security → Local Network.
 
+### Naming devices
+
+Kasa and Wemo devices report the names you gave them in their apps. WiZ
+bulbs can't (those names live in WiZ's cloud), so they appear as
+"WiZ bulb a1b2". To rename any device, copy `names.example.json` to
+`names.json` and map its id to a name. Ids are shown by
+`curl localhost:8123/api/devices`.
+
 To try it with no devices at all: `HOMEMATE_ADAPTERS=demo .venv/bin/uvicorn homemate.server:app --port 8123`
 
 To keep it running after reboots, see `deploy/com.homemate.server.plist`.
@@ -62,6 +70,11 @@ To keep it running after reboots, see `deploy/com.homemate.server.plist`.
 mini and your phone, and use the Mac's Tailscale address instead.
 **Don't** open a port on your router: HomeMate has no login yet, so anyone
 who found it could switch your devices.
+
+## Where this is going
+
+See [`docs/ROADMAP.md`](docs/ROADMAP.md): schedules, vacation mode, and an
+agent that oversees the house.
 
 ## Tests
 

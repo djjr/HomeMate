@@ -8,6 +8,7 @@ dependencies = [
     "uvicorn[standard]>=0.29",
     "python-kasa>=0.10",
     "pywemo>=1.4",
+    "pywizlight>=0.5",
 ]
 
 [project.optional-dependencies]
