@@ -1,0 +1,78 @@
+:root {
+  --bg: #f4f5f8;
+  --card: #ffffff;
+  --text: #1c2230;
+  --muted: #6b7280;
+  --accent: #f59e0b;
+  --track: #d1d5db;
+  --error: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11151d;
+    --card: #1c2230;
+    --text: #eef0f4;
+    --muted: #9ca3af;
+    --track: #374151;
+    --error: #f87171;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.4 -apple-system, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  /* Keep content clear of the iPhone notch and home bar. */
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+h1 { font-size: 1.6rem; margin: 0; }
+button {
+  font: inherit;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: var(--card);
+  color: var(--text);
+}
+#status { color: var(--muted); min-height: 1.4em; margin: 0 0 8px; }
+#status.error { color: var(--error); }
+ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.card.offline { opacity: 0.5; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.name { font-weight: 600; }
+.meta { color: var(--muted); font-size: 0.85rem; text-transform: capitalize; }
+.brightness { width: 100%; margin-top: 12px; accent-color: var(--accent); }
+
+/* A large iOS-style toggle: easy to hit with a thumb. */
+.switch { position: relative; width: 52px; height: 32px; flex: none; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0;
+  background: var(--track);
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+.slider::before {
+  content: "";
+  position: absolute; left: 3px; top: 3px;
+  width: 26px; height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch input:checked + .slider { background: var(--accent); }
+.switch input:checked + .slider::before { transform: translateX(20px); }

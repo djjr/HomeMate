@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Keeps HomeMate running on the Mac mini: starts it at login and restarts it
+  if it crashes. Replace YOURNAME with your macOS username, then:
+
+    cp deploy/com.homemate.server.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.homemate.server.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.homemate.server</string>
+  <key>WorkingDirectory</key>
+  <string>/Users/YOURNAME/HomeMate</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/YOURNAME/HomeMate/.venv/bin/uvicorn</string>
+    <string>homemate.server:app</string>
+    <string>--host</string>
+    <string>0.0.0.0</string>
+    <string>--port</string>
+    <string>8123</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/YOURNAME/HomeMate/homemate.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/YOURNAME/HomeMate/homemate.log</string>
+</dict>
+</plist>

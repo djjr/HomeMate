@@ -1,0 +1,11 @@
+{
+  "name": "HomeMate",
+  "short_name": "HomeMate",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#11151d",
+  "theme_color": "#1c2230",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

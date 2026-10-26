@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>HomeMate</title>
+  <!-- These make "Add to Home Screen" open full-screen like a native app. -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1c2230">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>HomeMate</h1>
+    <button id="discover" type="button">Scan</button>
+  </header>
+  <main>
+    <p id="status" role="status"></p>
+    <ul id="devices"></ul>
+  </main>
+
+  <!-- One card per device, cloned by app.js. -->
+  <template id="device-card">
+    <li class="card">
+      <div class="row">
+        <div>
+          <div class="name"></div>
+          <div class="meta"></div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" class="power">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <input type="range" class="brightness" min="1" max="100" hidden>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
